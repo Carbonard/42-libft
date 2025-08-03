@@ -1,0 +1,3 @@
+size_t in strlen / strncmp / memset...
+more tests for memset and bzero
+PTRDIFF_MAX in mallocs (read "return value")

@@ -1,0 +1,4 @@
+*.gch
+*.out
+*.o
+.venv/
