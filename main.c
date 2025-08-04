@@ -24,7 +24,37 @@ char	main_sgn(int n)
 	return ('0');
 }
 
-int	main(void)
+char	alternate_case_val(unsigned int i, char c)
+{
+	if (i % 2 == 0)
+	{
+		if ('a' <= c && c <= 'z')
+			return (c - 'a' + 'A');
+	}
+	else
+	{
+		if ('A' <= c && c <= 'Z')
+			return (c - 'A' + 'a');
+	}
+	return (c);
+}
+
+void	alternate_case_ref(unsigned int i, char *c)
+{
+	if (i % 2 == 0)
+	{
+		if ('a' <= *c && *c <= 'z')
+			*c += (- 'a' + 'A');
+	}
+	else
+	{
+		if ('A' <= *c && *c <= 'Z')
+			*c += (- 'A' + 'a');
+	}
+}
+
+
+int	main(int argc, char** argv)
 {
 	int		c;
 	int		n;
@@ -32,7 +62,7 @@ int	main(void)
 	int		k;
 	int		s;
 	char	**strings;
-	// char	**strings2;
+	char	**str_arr;
 	int		*integers;
 	int		*integers2;
 	int		n_int;
@@ -76,7 +106,7 @@ int	main(void)
 		if (ft_strlen(strings[i]) != strlen(strings[i]))
 			printf("Error: ft_strlen(%s) = %li != %li\n", strings[i], ft_strlen(strings[i]), strlen(strings[i]));
 	}
-	free(strings);
+	free_str_arr(strings, n);
 	n = 10;
 	string = calloc(n, sizeof(char));
 	string2 = calloc(n, sizeof(char));
@@ -118,9 +148,9 @@ int	main(void)
 	strings[5] = calloc(m, sizeof(char));
 	strcpy(strings[5], "Hola");
 	strings[6] = calloc(m, sizeof(char));
-	strcpy(strings[5], "ab");
+	strcpy(strings[6], "ab");
 	strings[7] = calloc(m, sizeof(char));
-	strcpy(strings[5], "ba");
+	strcpy(strings[7], "ba");
 	for (int i = 0; i < n; i++)
 		for (int j = 0; j < n; j++)
 			for (int k = 0; k < m; k++)
@@ -174,6 +204,74 @@ int	main(void)
 	memcpy(integers2, ints_aux_memcpy, m * sizeof(int));
 	if (memcmp(integers, integers2, (m+3) * sizeof(int)))
 		printf("Error: memcpy failed with integres");
+	free(integers);
+	free(integers2);
+	// memmove test 1
+	n = 20;
+	m = 7;
+	string = calloc(n, sizeof(char));
+	string2 = calloc(n, sizeof(char));
+	ft_memmove(string, "hola que tal", m * sizeof(char));
+	memmove(string2, "hola que tal", m * sizeof(char));
+	if (memcmp(string, string2, n))
+		printf("Error: memmove failed with strings (test 1)");
+	free(string);
+	free(string2);
+	integers = calloc(n, sizeof(int));
+	integers2 = calloc(n, sizeof(int));
+	int	ints_aux_memmove[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+	ft_memmove(integers, ints_aux_memmove, m * sizeof(int));
+	memmove(integers2, ints_aux_memmove, m * sizeof(int));
+	if (memcmp(integers, integers2, n * sizeof(int)))
+		printf("Error: memmove failed with integres (test 1)");
+	free(integers);
+	free(integers2);
+	// memmove test 2
+	string = calloc(n, sizeof(char));
+	string2 = calloc(n, sizeof(char));
+	strcpy(string, "hola que tal estas");
+	strcpy(string2, "hola que tal estas");
+	ft_memmove(string, string + 1, m * sizeof(char));
+	memmove(string2, string2 + 1, m * sizeof(char));
+	if (memcmp(string, string2, n))
+		printf("Error: memmove failed with strings (test 2)");
+	free(string);
+	free(string2);
+	integers = calloc(n, sizeof(int));
+	integers2 = calloc(n, sizeof(int));
+	for (int i = 0; i < n; i++)
+	{
+		integers[i] = i;
+		integers2[i] = i;
+	}
+	ft_memmove(integers, integers + 1, m * sizeof(int));
+	memmove(integers2, integers2 + 1, m * sizeof(int));
+	if (memcmp(integers, integers2, n * sizeof(int)))
+		printf("Error: memmove failed with integres (test 2)");
+	free(integers);
+	free(integers2);
+	// memmove test 3
+	string = calloc(n, sizeof(char));
+	string2 = calloc(n, sizeof(char));
+	strcpy(string, "hola que tal estas");
+	strcpy(string2, "hola que tal estas");
+	ft_memmove(string + 1, string, m * sizeof(char));
+	memmove(string2 + 1, string2, m * sizeof(char));
+	if (memcmp(string, string2, n))
+		printf("Error: memmove failed with strings (test 3)");
+	free(string);
+	free(string2);
+	integers = calloc(n, sizeof(int));
+	integers2 = calloc(n, sizeof(int));
+	for (int i = 0; i < n; i++)
+	{
+		integers[i] = i;
+		integers2[i] = i;
+	}
+	ft_memmove(integers + 1, integers, m * sizeof(int));
+	memmove(integers2 + 1, integers2, m * sizeof(int));
+	if (memcmp(integers, integers2, n * sizeof(int)))
+		printf("Error: memmove failed with integres (test 3)");
 	free(integers);
 	free(integers2);
 	// strlcpy
@@ -308,9 +406,9 @@ int	main(void)
 		}
 		c++;
 	}
+	free(string);
 	// strnstr
 	string = calloc(20, sizeof(char));
-	str_aux = calloc (10, sizeof(char));
 	strcpy(string, "hola que tal");
 	if (ft_strnstr(string, "hola", 4) != string)
 		printf("Error: strnstr failed at test 1\n");
@@ -336,6 +434,8 @@ int	main(void)
 	string2 = strdup("hola");
 	if (strcmp(string, string2) != 0)
 		printf("Error: strdup");
+	free(string);
+	free(string2);
 	// atoi
 	n = 14;
 	strings = malloc(n * sizeof(char *));
@@ -359,4 +459,63 @@ int	main(void)
 		if (ft_atoi(strings[i]) != atoi(strings[i]))
 		printf("Error: atoi failed at test %i\n\tExpected: %i\n\tObteined: %i\n", i, atoi(strings[i]), ft_atoi(strings[i]));
 	free_str_arr(strings, n);
+	(void) argc;
+	printf("Use 'valgrind %s' for testing memory leaks.\n", argv[0]);
+	// split
+	n = 30;
+	string = calloc(n, sizeof(char));
+	strncpy(string, "hola que tal",n);
+	str_arr = ft_split(string, ' ');
+	free(string);
+	if (strcmp(str_arr[0], "hola") != 0)
+		printf("Error: split failed on test 1.1\n");
+	if (strcmp(str_arr[1], "que") != 0)
+		printf("Error: split failed on test 1.2\n");
+	if (strcmp(str_arr[2], "tal") != 0)
+		printf("Error: split failed on test 1.3\n");
+	if (str_arr[3] != NULL)
+		printf("Error: split failed on test 1.4\n");
+	k = 0;
+	while (str_arr[k] != NULL)
+	{
+		free(str_arr[k]);
+		k++;
+	}
+	free(str_arr);
+	string = calloc(n, sizeof(char));
+	strncpy(string, "...hola....que..tal..estas?....",n);
+	str_arr = ft_split(string, '.');
+	free(string);
+	if (strcmp(str_arr[0], "hola") != 0)
+		printf("Error: split failed on test 2.1\n");
+	if (strcmp(str_arr[1], "que") != 0)
+		printf("Error: split failed on test 2.2\n");
+	if (strcmp(str_arr[2], "tal") != 0)
+		printf("Error: split failed on test 2.3\n");
+	if (strcmp(str_arr[3], "estas?") != 0)
+		printf("Error: split failed on test 2.4\n");
+	if (str_arr[4] != NULL)
+		printf("Error: split failed on test 2.5\n");
+	k = 0;
+	while (str_arr[k] != NULL)
+	{
+		free(str_arr[k]);
+		k++;
+	}
+	free(str_arr);
+	// strmapi
+	n = 20;
+	string = calloc(n, sizeof(char));
+	strncpy(string,"abcdefghijk", n);
+	string2 = ft_strmapi(string, alternate_case_val);
+	if (strncmp(string2, "AbCdEfGhIjK",n))
+		printf("Error: strmapi failed with alternate_case_val");
+	free(string2);
+	ft_striteri(string, alternate_case_ref);
+	if (strncmp(string, "AbCdEfGhIjK",n))
+		printf("Error: strmapi failed with alternate_case_ref");
+	free(string);
+	ft_putstr_fd("hola que tal", 1);
+	ft_putchar_fd('\n', 1);
+	ft_putendl_fd("muy bien", 1);
 }

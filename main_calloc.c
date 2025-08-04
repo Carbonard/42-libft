@@ -3,7 +3,7 @@
  */
 
 #include <stdio.h>
-#include "../libft.h"
+#include "libft.h"
 int main()
 {
 	int n = 5;

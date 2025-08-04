@@ -1,3 +1,5 @@
 size_t in strlen / strncmp / memset...
 more tests for memset and bzero
 PTRDIFF_MAX in mallocs (read "return value")
+main for substr, join, strim
+en el split "hola..que.tal" deberia ser {"hola", "", "que", "tal"} o {"hola", "que", "tal"}
