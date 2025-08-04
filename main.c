@@ -1,5 +1,6 @@
 // To compare original functions with mine.
-
+// compile ft_*.c main.c *.h && ./a.out
+// make bonus && compile main_bonus.c libft.a && ./a.out'
 #include <ctype.h> // isalpha...
 #include <string.h> // str-cosa, mem-cosa,
 #include <stdlib.h>
@@ -459,8 +460,6 @@ int	main(int argc, char** argv)
 		if (ft_atoi(strings[i]) != atoi(strings[i]))
 		printf("Error: atoi failed at test %i\n\tExpected: %i\n\tObteined: %i\n", i, atoi(strings[i]), ft_atoi(strings[i]));
 	free_str_arr(strings, n);
-	(void) argc;
-	printf("Use 'valgrind %s' for testing memory leaks.\n", argv[0]);
 	// split
 	n = 30;
 	string = calloc(n, sizeof(char));
@@ -518,4 +517,7 @@ int	main(int argc, char** argv)
 	ft_putstr_fd("hola que tal", 1);
 	ft_putchar_fd('\n', 1);
 	ft_putendl_fd("muy bien", 1);
+	
+	(void) argc;
+	printf("Use 'valgrind %s' for testing memory leaks.\n", argv[0]);
 }
