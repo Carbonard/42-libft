@@ -17,7 +17,7 @@ void	ft_putnbr_fd(int n, int fd)
 	i = 0;
 	while (num > 0)
 	{
-		number[i] = num % 10 - '0';
+		number[i] = num % 10 + '0';
 		num /= 10;
 		i++;
 	}
